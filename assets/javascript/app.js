@@ -31,15 +31,18 @@
 
 let questions;
 let cursor;
-let selectedA;
-let correctA;
+let selectedAnswer;
+let correctAnswer;
+let timerQ;
+let timesCorrect = 0;
+let timesIncorrect = 0;
 let triviaQ = $('#triviaQ');
 let triviaA = $('tbody');
 let triviaTimer = $('#triviaTimer');
 let triviaUpdate = $('#triviaUpdate');
 let triviaTitle = $('#triviaTitle');
 let newGlobalRow = $('<tr>')
-let queryURL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=easy";
+let queryURL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=medium";
 
 $.ajax({
     url: queryURL,
@@ -50,7 +53,7 @@ $.ajax({
     let results = response.results;
     for (let x = 0; x < results.length; x++) {
         let result = results[x];
-        correctA = result.correct_answer;
+        correctAnswer = result.correct_answer;
         triviaA.empty();
         triviaQ.html(result.question);
         let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
@@ -61,19 +64,30 @@ $.ajax({
             newRow.html(result.incorrect_answers[a]);
         }
     }
+    async: true;
 });
 
 function triviaSelect() {
-    let selectedA = this.innerHTML;
+    let selectedAnswer = this.innerHTML;
     triviaA.empty();
-    if (selectedA === correctA) {
-        triviaA.html(newGlobalRow.html("Passable Attempt, I guess.\n"));
-        triviaA.append(newGlobalRow.append(correctA));
+    if (selectedAnswer === correctAnswer) {
+        triviaA.html(newGlobalRow.html("Wait you accidentally got that right.\n"));
+        triviaA.append(newGlobalRow.append(correctAnswer));
+        timesCorrect++;
+    } else if (timerQ < 0) {
+        triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
+        triviaA.append(newGlobalRow.append(correctAnswer));
+        timesIncorrect++;
     } else {
         triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
-        triviaA.append(newGlobalRow.append('Your answer ' + selectedA));
+        triviaA.append(newGlobalRow.append('Your answer ' + selectedAnswer));
         triviaA.append(newGlobalRow.append('\n\nLet me show you the CORRECT answer\n'));
-        triviaA.append(newGlobalRow.append(correctA));
+        triviaA.append(newGlobalRow.append(correctAnswer));
+        timesIncorrect++;
     }
 };
+
+$( document ).ajaxComplete(function() {
+console.log(questions)
+});
 
