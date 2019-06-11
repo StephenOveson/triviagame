@@ -53,37 +53,54 @@ $.ajax({
     let results = response.results;
     for (let x = 0; x < results.length; x++) {
         let result = results[x];
-        correctAnswer = result.correct_answer;
-        triviaA.empty();
-        triviaQ.html(result.question);
-        let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
-        result.incorrect_answers.splice(randomAnswer, 0, result.correct_answer);
-        for (let a = 0; a < result.incorrect_answers.length; a++) {
-            let newRow = $('<tr>').on('click', triviaSelect);
-            triviaA.append(newRow);
-            newRow.html(result.incorrect_answers[a]);
+        function questionSetup() {
+            correctAnswer = result.correct_answer;
+            triviaA.empty();
+            triviaQ.empty();
+            triviaQ.html(result.question);
+            let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
+            result.incorrect_answers.splice(randomAnswer, 0, result.correct_answer);
+            for (let a = 0; a < result.incorrect_answers.length; a++) {
+                let newRow = $('<tr>').on('click', triviaSelect);
+                triviaA.append(newRow);
+                newRow.html(result.incorrect_answers[a]);
+            }
         }
-    }
+        questionSetup();
+
+        function triviaSelect() {
+            let selectedAnswer = this.innerHTML;
+            triviaA.empty();
+            if (selectedAnswer === correctAnswer) {
+                triviaA.html(newGlobalRow.html("Wait you accidentally got that right.\n"));
+                triviaA.append(newGlobalRow.append(correctAnswer));
+                timesCorrect++;
+            } else if (timeLeft <= 0) {
+                triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
+                triviaA.append(newGlobalRow.append(correctAnswer));
+                timesIncorrect++;
+            } else {
+                triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
+                triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
+                triviaA.append(newGlobalRow.append('\n\nLet me show you the CORRECT answer\n'));
+                triviaA.append(newGlobalRow.append(correctAnswer));
+                timesIncorrect++;
+            }
+        }
+        let timeLeft = 5;
+        let timerId = setInterval(countdown, 1000);
+        function countdown(){
+            if (timeLeft <= 0) {
+                clearTimeout(timerId);
+                triviaSelect();
+            } else {
+                $('#triviaTimer').html(timeLeft + ' seconds remaining')
+                timeLeft--;
+            }
+        }
+    };
 });
 
 
 
-function triviaSelect() {
-    let selectedAnswer = this.innerHTML;
-    triviaA.empty();
-    if (selectedAnswer === correctAnswer) {
-        triviaA.html(newGlobalRow.html("Wait you accidentally got that right.\n"));
-        triviaA.append(newGlobalRow.append(correctAnswer));
-        timesCorrect++;
-    } else if (timerQ < 0) {
-        triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
-        triviaA.append(newGlobalRow.append(correctAnswer));
-        timesIncorrect++;
-    } else {
-        triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
-        triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
-        triviaA.append(newGlobalRow.append('\n\nLet me show you the CORRECT answer\n'));
-        triviaA.append(newGlobalRow.append(correctAnswer));
-        timesIncorrect++;
-    }
-};
+
