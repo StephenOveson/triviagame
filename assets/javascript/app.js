@@ -64,8 +64,9 @@ $.ajax({
             newRow.html(result.incorrect_answers[a]);
         }
     }
-    async: true;
 });
+
+
 
 function triviaSelect() {
     let selectedAnswer = this.innerHTML;
@@ -80,14 +81,9 @@ function triviaSelect() {
         timesIncorrect++;
     } else {
         triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
-        triviaA.append(newGlobalRow.append('Your answer ' + selectedAnswer));
+        triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
         triviaA.append(newGlobalRow.append('\n\nLet me show you the CORRECT answer\n'));
         triviaA.append(newGlobalRow.append(correctAnswer));
         timesIncorrect++;
     }
 };
-
-$( document ).ajaxComplete(function() {
-console.log(questions)
-});
-
