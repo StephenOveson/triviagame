@@ -17,8 +17,11 @@ $.ajax({
         let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
         result.incorrect_answers.splice(randomAnswer, 0, result.correct_answer);
         triviaA.html(result.incorrect_answers);
+        for (let a = 0; a < result.incorrect_answers.length; a++) {
+            let newRow = $('tbody').append('<tr>');
+            newRow.html(result.incorrect_answers[a]);
+        }
         console.log(result.incorrect_answers);
-        debugger;
     }
 });
 
