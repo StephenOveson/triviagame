@@ -68,8 +68,8 @@ $.ajax({
                 newRow.html(result.incorrect_answers[a]);
             }
         }
-        questionSetup();
     }
+    questionSetup();
     function triviaSelect() {
         let selectedAnswer = this.innerHTML;
         triviaA.empty();
@@ -78,11 +78,13 @@ $.ajax({
             triviaA.append(newGlobalRow.append(correctAnswer));
             timesCorrect++;
             stopCountdown();
+            setTimeout(questionSetup, 5000)
         } else if (timeLeft == -1) {
             triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
             triviaA.append(newGlobalRow.append(correctAnswer));
             timesIncorrect++;
             stopCountdown();
+            setTimeout(questionSetup, 5000)
         } else {
             triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
             triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
@@ -90,12 +92,11 @@ $.ajax({
             triviaA.append(newGlobalRow.append(correctAnswer));
             timesIncorrect++;
             stopCountdown();
+            setTimeout(questionSetup, 5000)
         }
     }
-    let timeLeft = 5;
-    let timerId
-    clearInterval(timerId)
-    timerId = setInterval(countdown, 1000);
+    let timeLeft = 15;
+    let timerId = setInterval(countdown, 1000);
 
     function countdown() {
         if (timeLeft == -1) {
@@ -111,29 +112,6 @@ $.ajax({
         clearTimeout(timerId)
     }
 
-
-
-    function nextQuestion() {
-        let timeDown = 5
-        let timeRemaining = setInterval(nextQuestion, 1000)
-        if (timeDown = -1) {
-            clearInterval(timeRemaining)
-            clearTimeout(timeRemaining)
-        } else {
-            timeDown--; 
-    }
-    }
-    // let timeRemaining = 5;
-    // let timer2 = setInterval(countToQuestion, 1000)
-    // function countToQuestion() {
-    //     if (timeRemaining == 0){
-    //         clearTimeout(timer2);
-    //         questionSetup();
-    //     } else {
-    //         $('#triviaTimer').html(timeRemaining + ' seconds remaining')
-    //         timeRemaining--;
-    //     }
-    // }
 
 });
 
