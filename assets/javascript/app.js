@@ -57,7 +57,7 @@ $.ajax({
             correctAnswer = result.correct_answer;
             triviaA.empty();
             triviaQ.empty();
-            triviaQ.html(result.question);
+            triviaQ.html(questions[cursor].question);
             let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
             result.incorrect_answers.splice(randomAnswer, 0, result.correct_answer);
             for (let a = 0; a < result.incorrect_answers.length; a++) {
@@ -75,10 +75,11 @@ $.ajax({
                 triviaA.html(newGlobalRow.html("Wait you accidentally got that right.\n"));
                 triviaA.append(newGlobalRow.append(correctAnswer));
                 timesCorrect++;
-            } else if (timeLeft <= 0) {
+            } else if (timeLeft == 0) {
                 triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
                 triviaA.append(newGlobalRow.append(correctAnswer));
                 timesIncorrect++;
+
             } else {
                 triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
                 triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
@@ -90,14 +91,31 @@ $.ajax({
         let timeLeft = 5;
         let timerId = setInterval(countdown, 1000);
         function countdown(){
-            if (timeLeft <= 0) {
-                clearTimeout(timerId);
+            if (timeLeft == 0) {
+                clearInterval(timerId);
                 triviaSelect();
+                return;
+            } else if (selectedAnswer === correctAnswer) {
+                    clearInterval(timerId);
+                    clearTimeout(timerId);
+                    timeLeft = 5;
+                    return;
             } else {
                 $('#triviaTimer').html(timeLeft + ' seconds remaining')
                 timeLeft--;
             }
         }
+        // let timeRemaining = 5;
+        // let timer2 = setInterval(countToQuestion, 1000)
+        // function countToQuestion() {
+        //     if (timeRemaining == 0){
+        //         clearTimeout(timer2);
+        //         questionSetup();
+        //     } else {
+        //         $('#triviaTimer').html(timeRemaining + ' seconds remaining')
+        //         timeRemaining--;
+        //     }
+        // }
     };
 });
 
