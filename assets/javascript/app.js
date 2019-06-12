@@ -42,6 +42,8 @@ let triviaTimer = $('#triviaTimer');
 let triviaUpdate = $('#triviaUpdate');
 let triviaTitle = $('#triviaTitle');
 let newGlobalRow = $('<tr>')
+let difficulty;
+let amount;
 let queryURL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=medium";
 
 $.ajax({
@@ -67,56 +69,72 @@ $.ajax({
             }
         }
         questionSetup();
-
-        function triviaSelect() {
-            let selectedAnswer = this.innerHTML;
-            triviaA.empty();
-            if (selectedAnswer === correctAnswer) {
-                triviaA.html(newGlobalRow.html("Wait you accidentally got that right.\n"));
-                triviaA.append(newGlobalRow.append(correctAnswer));
-                timesCorrect++;
-            } else if (timeLeft == 0) {
-                triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
-                triviaA.append(newGlobalRow.append(correctAnswer));
-                timesIncorrect++;
-
-            } else {
-                triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
-                triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
-                triviaA.append(newGlobalRow.append('\n\nLet me show you the CORRECT answer\n'));
-                triviaA.append(newGlobalRow.append(correctAnswer));
-                timesIncorrect++;
-            }
+    }
+    function triviaSelect() {
+        let selectedAnswer = this.innerHTML;
+        triviaA.empty();
+        if (selectedAnswer === correctAnswer) {
+            triviaA.html(newGlobalRow.html("Wait you accidentally got that right.\n"));
+            triviaA.append(newGlobalRow.append(correctAnswer));
+            timesCorrect++;
+            stopCountdown();
+        } else if (timeLeft == -1) {
+            triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
+            triviaA.append(newGlobalRow.append(correctAnswer));
+            timesIncorrect++;
+            stopCountdown();
+        } else {
+            triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
+            triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
+            triviaA.append(newGlobalRow.append('\n\nLet me show you the CORRECT answer\n'));
+            triviaA.append(newGlobalRow.append(correctAnswer));
+            timesIncorrect++;
+            stopCountdown();
         }
-        let timeLeft = 5;
-        let timerId = setInterval(countdown, 1000);
-        function countdown(){
-            if (timeLeft == 0) {
-                clearInterval(timerId);
-                triviaSelect();
-                return;
-            } else if (selectedAnswer === correctAnswer) {
-                    clearInterval(timerId);
-                    clearTimeout(timerId);
-                    timeLeft = 5;
-                    return;
-            } else {
-                $('#triviaTimer').html(timeLeft + ' seconds remaining')
-                timeLeft--;
-            }
+    }
+    let timeLeft = 5;
+    let timerId
+    clearInterval(timerId)
+    timerId = setInterval(countdown, 1000);
+
+    function countdown() {
+        if (timeLeft == -1) {
+            triviaSelect();
+        } else if (selectedAnswer === correctAnswer) {
+            triviaSelect();
+        } else {
+            $('#triviaTimer').html(timeLeft + ' seconds remaining')
+            timeLeft--;
         }
-        // let timeRemaining = 5;
-        // let timer2 = setInterval(countToQuestion, 1000)
-        // function countToQuestion() {
-        //     if (timeRemaining == 0){
-        //         clearTimeout(timer2);
-        //         questionSetup();
-        //     } else {
-        //         $('#triviaTimer').html(timeRemaining + ' seconds remaining')
-        //         timeRemaining--;
-        //     }
-        // }
-    };
+    }
+    function stopCountdown() {
+        clearTimeout(timerId)
+    }
+
+
+
+    function nextQuestion() {
+        let timeDown = 5
+        let timeRemaining = setInterval(nextQuestion, 1000)
+        if (timeDown = -1) {
+            clearInterval(timeRemaining)
+            clearTimeout(timeRemaining)
+        } else {
+            timeDown--; 
+    }
+    }
+    // let timeRemaining = 5;
+    // let timer2 = setInterval(countToQuestion, 1000)
+    // function countToQuestion() {
+    //     if (timeRemaining == 0){
+    //         clearTimeout(timer2);
+    //         questionSetup();
+    //     } else {
+    //         $('#triviaTimer').html(timeRemaining + ' seconds remaining')
+    //         timeRemaining--;
+    //     }
+    // }
+
 });
 
 
