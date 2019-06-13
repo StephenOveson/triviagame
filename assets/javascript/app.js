@@ -14,7 +14,7 @@ let newGlobalRow = $('<tr>')
 let difficulty;
 let amount;
 let queryURL = "https://opentdb.com/api.php?amount=30&category=11&difficulty=hard";
-let timeLeft = 30;
+let timeLeft;
 let timerId;
 
 
@@ -39,7 +39,6 @@ function questionSetup() {
     }
     timeLeft = 30;
     timerId = setInterval(countdown, 1000);
-    countdown();
 }
 
 function triviaSelect() {
@@ -51,13 +50,11 @@ function triviaSelect() {
         triviaA.append(newGlobalRow.append(correctAnswer));
         timesCorrect++;
         setTimeout(questionSetup, 5000)
-
     } else if (timeLeft == -1) {
         triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
         triviaA.append(newGlobalRow.append(correctAnswer));
         timesIncorrect++;
         setTimeout(questionSetup, 5000)
-
     } else {
         triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
         triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
