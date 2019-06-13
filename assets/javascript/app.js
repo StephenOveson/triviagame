@@ -51,22 +51,25 @@ $.ajax({
     method: "GET"
 }).then(function (response) {
     questions = response.results;
-    cursor = response.results.length - 1;
+    cursor = response.results.length;
     let results = response.results;
+    let result;
     for (let x = 0; x < results.length; x++) {
-        let result = results[x];
-        function questionSetup() {
-            correctAnswer = result.correct_answer;
-            triviaA.empty();
-            triviaQ.empty();
-            triviaQ.html(questions[cursor].question);
-            let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
-            result.incorrect_answers.splice(randomAnswer, 0, result.correct_answer);
-            for (let a = 0; a < result.incorrect_answers.length; a++) {
-                let newRow = $('<tr>').on('click', triviaSelect);
-                triviaA.append(newRow);
-                newRow.html(result.incorrect_answers[a]);
-            }
+        result = results[x];
+    }
+    function questionSetup() {
+        correctAnswer = results.correct_answer;
+        triviaA.empty();
+        triviaQ.empty();
+        cursor--;
+        results--;
+        triviaQ.html(questions[cursor].question);
+        let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
+        result.incorrect_answers.splice(randomAnswer, 0, result.correct_answer);
+        for (let a = 0; a < result.incorrect_answers.length; a++) {
+            let newRow = $('<tr>').on('click', triviaSelect);
+            triviaA.append(newRow);
+            newRow.html(result.incorrect_answers[a]);
         }
     }
     questionSetup();
@@ -79,12 +82,16 @@ $.ajax({
             timesCorrect++;
             stopCountdown();
             setTimeout(questionSetup, 5000)
+            setTimeout(resetTimer, 5000);
+
         } else if (timeLeft == -1) {
             triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
             triviaA.append(newGlobalRow.append(correctAnswer));
             timesIncorrect++;
             stopCountdown();
             setTimeout(questionSetup, 5000)
+            setTimeout(resetTimer, 5000);
+
         } else {
             triviaA.html(newGlobalRow.html("Wrong answer. Nerd.\n"));
             triviaA.append(newGlobalRow.append('Your answer: ' + selectedAnswer));
@@ -93,6 +100,7 @@ $.ajax({
             timesIncorrect++;
             stopCountdown();
             setTimeout(questionSetup, 5000)
+            setTimeout(resetTimer, 5000);
         }
     }
     let timeLeft = 15;
@@ -110,6 +118,12 @@ $.ajax({
     }
     function stopCountdown() {
         clearTimeout(timerId)
+    }
+
+    function resetTimer() {
+        timeLeft = 15;
+        timerId = setInterval(countdown, 1000);
+        countdown();
     }
 
 
