@@ -13,9 +13,9 @@ let triviaTitle = $('#triviaTitle');
 let newGlobalRow = $('<tr>')
 let difficulty;
 let amount;
-let queryURL = "https://opentdb.com/api.php?amount=10&category=11&difficulty=medium";
+let queryURL = "https://opentdb.com/api.php?amount=30&category=11&difficulty=hard";
 let timeLeft = 30;
-let timerId = setInterval(countdown, 1000);
+let timerId;
 
 
 function questionSetup() {
@@ -45,18 +45,17 @@ function questionSetup() {
 function triviaSelect() {
     let selectedAnswer = this.innerHTML;
     triviaA.empty();
+    clearTimeout(timerId)
     if (selectedAnswer === correctAnswer) {
         triviaA.html(newGlobalRow.html("Wait you accidentally got that right.\n"));
         triviaA.append(newGlobalRow.append(correctAnswer));
         timesCorrect++;
-        stopCountdown();
         setTimeout(questionSetup, 5000)
 
     } else if (timeLeft == -1) {
         triviaA.html(newGlobalRow.html("Try not to take too long. Here's the answer anyways.\n"));
         triviaA.append(newGlobalRow.append(correctAnswer));
         timesIncorrect++;
-        stopCountdown();
         setTimeout(questionSetup, 5000)
 
     } else {
@@ -65,11 +64,9 @@ function triviaSelect() {
         triviaA.append(newGlobalRow.append('\n\nLet me show you the CORRECT answer\n'));
         triviaA.append(newGlobalRow.append(correctAnswer));
         timesIncorrect++;
-        stopCountdown();
         setTimeout(questionSetup, 5000)
     }
 }
-
 
 function countdown() {
     if (timeLeft == -1) {
@@ -80,9 +77,6 @@ function countdown() {
         $('#triviaTimer').html(timeLeft + ' seconds remaining')
         timeLeft--;
     }
-}
-function stopCountdown() {
-    clearTimeout(timerId)
 }
 
 $.ajax({
