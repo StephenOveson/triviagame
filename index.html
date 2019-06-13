@@ -11,6 +11,7 @@
 </head>
 
 <body>
+  <h1>Pick your Trivia!</h1>
   <form>
     <label for="trivia_amount">Number of Questions:</label>
     <input type="number" name="trivia_amount" id="trivia_amount" class="form-control" min="1" max="50" value="10">
@@ -19,7 +20,6 @@
 
     <label for="trivia_category">Select Category: </label>
     <select name="trivia_category" class="form-control" id="category">
-      <option value="any">Any Category</option>
       <option value="9">General Knowledge</option>
       <option value="10">Entertainment: Books</option>
       <option value="11">Entertainment: Film</option>
@@ -50,12 +50,12 @@
 
     <label for="trivia_difficulty">Select Difficulty: </label>
     <select name="trivia_difficulty" class="form-control" id="difficulty">
-      <option value="any">Any Difficulty</option>
       <option value="easy">Easy</option>
       <option value="medium">Medium</option>
       <option value="hard">Hard</option>
     </select>
-    <input type="submit" id="submit">
+    <br>
+    <input type="button" id="submit" value="Submit">
   </form>
   <script src="assets/javascript/index.js"></script>
 </body>

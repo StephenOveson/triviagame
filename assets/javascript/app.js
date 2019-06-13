@@ -24,10 +24,8 @@ let category = getParamOrDefault('category', '11');
 let difficulty = getParamOrDefault('difficulty', 'hard');
 let queryURL = "https://opentdb.com/api.php?amount=" + amount + "&category=" + category + "&difficulty=" + difficulty;
 
-
-
 function questionSetup() {
-    if (cursor < 0){
+    if (cursor < 0) {
         $('#triviaUpdate').empty();
         $('#triviaUpdate').html('<h1>You Tried!</h1>');
         $('#triviaUpdate').append('<h2>Look you got something right for once.</h2>' + timesCorrect);
