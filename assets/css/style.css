@@ -1,3 +1,45 @@
-tbody {
+body {
+    font-family: 'Alegreya Sans SC', sans-serif;
+    font-size: 25px;
+}
+
+h1 {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 3px;
+
+}
+
+label {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 3px;
+
+}
+
+th {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 3px;
+
+}
+
+table {
     white-space: pre-wrap;
+    text-align: center;
+    margin: auto;
+}
+
+th {
+    padding: 25px;
+    letter-spacing: 3px;
+}
+
+#triviaTimer {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 3px;
+    padding: 25px;
+}
+
+.container {
+    max-width: 980px;
+    margin: auto;
+    text-align: center;
 }
