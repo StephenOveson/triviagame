@@ -39,7 +39,7 @@ function questionSetup() {
     triviaA.empty();
     triviaQ.empty();
     triviaQ.html(question.question);
-    triviaTitle.html('Questions left ' + cursor)
+    triviaTitle.html('Questions left ' + (cursor + 1))
     let randomAnswer = Math.floor(Math.random() * question.incorrect_answers.length + 1);
     question.incorrect_answers.splice(randomAnswer, 0, question.correct_answer);
     for (let a = 0; a < question.incorrect_answers.length; a++) {
