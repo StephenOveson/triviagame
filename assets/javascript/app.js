@@ -25,10 +25,6 @@ let difficulty = getParamOrDefault('difficulty', 'hard');
 let queryURL = "https://opentdb.com/api.php?amount=" + amount + "&category=" + category + "&difficulty=" + difficulty;
 
 
-$('#submit').on('click', function(){
-    window.location.href = "/game.html?amount=" + amount + "&category=" + category + "&difficulty=" + difficulty;
-})
-
 
 function questionSetup() {
     if (cursor < 0){
