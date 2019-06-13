@@ -51,24 +51,31 @@ $.ajax({
     method: "GET"
 }).then(function (response) {
     questions = response.results;
-    cursor = response.results.length;
+    cursor = response.results.length - 1;
+    
     // let results = response.results;
     // let result = questions[cursor]
     // // for (let x = 0; x < results.length; x++) {
     // //     result = results[x];
     // // }
     function questionSetup() {
-        correctAnswer = questions.correct_answer;
+        if (cursor < 0){
+            $('#triviaUpdate').empty();
+            $('#triviaUpdate').html('<h1>You Tried!</h1>')
+            return;
+        }
+        let question = questions[cursor]
+        cursor--;
+        correctAnswer = question.correct_answer;
         triviaA.empty();
         triviaQ.empty();
-        cursor--;
-        triviaQ.html(questions[cursor].question);
-        let randomAnswer = Math.floor(Math.random() * questions[cursor].incorrect_answers.length + 1);
-        questions[cursor].incorrect_answers.splice(randomAnswer, 0, questions[cursor].correct_answer);
-        for (let a = 0; a < questions[cursor].incorrect_answers.length; a++) {
+        triviaQ.html(question.question);
+        let randomAnswer = Math.floor(Math.random() * question.incorrect_answers.length + 1);
+        question.incorrect_answers.splice(randomAnswer, 0, question.correct_answer);
+        for (let a = 0; a < question.incorrect_answers.length; a++) {
             let newRow = $('<tr>').on('click', triviaSelect);
             triviaA.append(newRow);
-            newRow.html(questions[cursor].incorrect_answers[a]);
+            newRow.html(question.incorrect_answers[a]);
         }
     }
     questionSetup();
@@ -102,7 +109,7 @@ $.ajax({
             setTimeout(resetTimer, 5000);
         }
     }
-    let timeLeft = 15;
+    let timeLeft = 30;
     let timerId = setInterval(countdown, 1000);
 
     function countdown() {
@@ -124,10 +131,4 @@ $.ajax({
         timerId = setInterval(countdown, 1000);
         countdown();
     }
-
-
 });
-
-
-
-
