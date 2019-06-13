@@ -52,24 +52,23 @@ $.ajax({
 }).then(function (response) {
     questions = response.results;
     cursor = response.results.length;
-    let results = response.results;
-    let result;
-    for (let x = 0; x < results.length; x++) {
-        result = results[x];
-    }
+    // let results = response.results;
+    // let result = questions[cursor]
+    // // for (let x = 0; x < results.length; x++) {
+    // //     result = results[x];
+    // // }
     function questionSetup() {
-        correctAnswer = results.correct_answer;
+        correctAnswer = questions.correct_answer;
         triviaA.empty();
         triviaQ.empty();
         cursor--;
-        results--;
         triviaQ.html(questions[cursor].question);
-        let randomAnswer = Math.floor(Math.random() * result.incorrect_answers.length + 1);
-        result.incorrect_answers.splice(randomAnswer, 0, result.correct_answer);
-        for (let a = 0; a < result.incorrect_answers.length; a++) {
+        let randomAnswer = Math.floor(Math.random() * questions[cursor].incorrect_answers.length + 1);
+        questions[cursor].incorrect_answers.splice(randomAnswer, 0, questions[cursor].correct_answer);
+        for (let a = 0; a < questions[cursor].incorrect_answers.length; a++) {
             let newRow = $('<tr>').on('click', triviaSelect);
             triviaA.append(newRow);
-            newRow.html(result.incorrect_answers[a]);
+            newRow.html(questions[cursor].incorrect_answers[a]);
         }
     }
     questionSetup();
