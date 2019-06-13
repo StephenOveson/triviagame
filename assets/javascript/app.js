@@ -27,17 +27,19 @@ let queryURL = "https://opentdb.com/api.php?amount=" + amount + "&category=" + c
 function questionSetup() {
     if (cursor < 0) {
         $('#triviaUpdate').empty();
-        $('#triviaUpdate').html('<h1>You Tried!</h1>');
-        $('#triviaUpdate').append('<h2>Look you got something right for once.</h2>' + timesCorrect);
-        $('#triviaUpdate').append('<h2>No surprise</h2>' + timesCorrect);
+        $('#triviaUpdate').html('<h1>You made it through!</h1>');
+        $('#triviaUpdate').append('<h2>Total Right</h2>' + timesCorrect);
+        $('#triviaUpdate').append('<h2>Total Wrong</h2>' + timesIncorrect);
         return;
     }
     let question = questions[cursor]
     cursor--;
     correctAnswer = question.correct_answer;
+    triviaTitle.empty();
     triviaA.empty();
     triviaQ.empty();
     triviaQ.html(question.question);
+    triviaTitle.html('Questions left ' + cursor)
     let randomAnswer = Math.floor(Math.random() * question.incorrect_answers.length + 1);
     question.incorrect_answers.splice(randomAnswer, 0, question.correct_answer);
     for (let a = 0; a < question.incorrect_answers.length; a++) {
