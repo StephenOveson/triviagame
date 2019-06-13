@@ -30,7 +30,8 @@ function questionSetup() {
         $('#triviaUpdate').html('<h1>You made it through!</h1>');
         $('#triviaUpdate').append('<h2>Total Right</h2>' + timesCorrect);
         $('#triviaUpdate').append('<h2>Total Wrong</h2>' + timesIncorrect);
-        $('#triviaUpdate').append('\n\n<button>Restart</button>').addClass("restart");
+        $('#triviaUpdate').append('<br>')
+        $('#triviaUpdate').append('<button>Restart</button>').addClass("restart");
         $('.restart').on('click', function(){
             window.location.href = "/triviagame"
         })
