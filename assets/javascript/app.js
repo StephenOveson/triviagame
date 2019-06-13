@@ -11,17 +11,31 @@ let triviaTimer = $('#triviaTimer');
 let triviaUpdate = $('#triviaUpdate');
 let triviaTitle = $('#triviaTitle');
 let newGlobalRow = $('<tr>')
-let difficulty;
-let amount;
-let queryURL = "https://opentdb.com/api.php?amount=30&category=11&difficulty=hard";
 let timeLeft;
 let timerId;
+
+
+let urlParams = new URLSearchParams(window.location.search);
+function getParamOrDefault(param, defaultValue) {
+    return urlParams.has(param) ? urlParams.get(param) : defaultValue;
+}
+let amount = getParamOrDefault('amount', '10');
+let category = getParamOrDefault('category', '11');
+let difficulty = getParamOrDefault('difficulty', 'hard');
+let queryURL = "https://opentdb.com/api.php?amount=" + amount + "&category=" + category + "&difficulty=" + difficulty;
+
+
+$('#submit').on('click', function(){
+    window.location.href = "/game.html?amount=" + amount + "&category=" + category + "&difficulty=" + difficulty;
+})
 
 
 function questionSetup() {
     if (cursor < 0){
         $('#triviaUpdate').empty();
-        $('#triviaUpdate').html('<h1>You Tried!</h1>')
+        $('#triviaUpdate').html('<h1>You Tried!</h1>');
+        $('#triviaUpdate').append('<h2>Look you got something right for once.</h2>' + timesCorrect);
+        $('#triviaUpdate').append('<h2>No surprise</h2>' + timesCorrect);
         return;
     }
     let question = questions[cursor]
